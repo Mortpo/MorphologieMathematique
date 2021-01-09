@@ -24,21 +24,24 @@ for i in range(pictureX):
             for x in range(matrixX):
                 for y in range(matrixY):
                     valide = True
-                    if ((i-centerX) <= 0) or ((j-centerY)<=0) or ((i+centerX) >= pictureX) or ((j+centerY)>=pictureY): #verifie si on est dedans l'image
+                    if ((i-centerX) < 0) or ((j-centerY)<0) or ((i+centerX) > pictureX-1) or ((j+centerY)>pictureY-1): #verifie si on est dedans l'image
                         valide = False
                     print(i, j , i+x-centerX ,i+y-centerY)
-                    if valide == True and binaryPicture[i+x-centerX][i+y-centerY] != erodeMatrix[x][y] : #verifie si le filtre est vilidé
+                    if binaryPicture[i+x-centerX][i+y-centerY] != erodeMatrix[x][y] : #verifie si le filtre est vilidé
                         valide = False
             if valide == True:
-                result[i][j][0] = 0
-            else:
                 result[i][j][0] = 1
+            else:
+                result[i][j][0] = 0
 
 
 plt.figure(0)
 plt.imshow(binaryPicture,cmap='binary')
 plt.figure(1)
 plt.imshow(result,cmap='binary')
+plt.figure(2)
+erosion = CV.erode(binaryPicture,erodeMatrix,iterations = 1)
+plt.imshow(erosion,cmap='binary')
 plt.show()
 
                 
