@@ -32,14 +32,3 @@ def subTwoImages(picture1,picture2):
         return result
     else:
         raise Exception('Error in equation profondeur1 == profondeur2 and picture1X == picture2X and picture1Y == picture2Y')
-
-
-img1 = Outils.loadimage("img1.jpg")
-img2 = Outils.loadimage("img2.jpg")
-imgadd = subTwoImages(img1,img2)
-plt.imshow(np.uint8(imgadd))
-plt.show()
-
-imgaddV2 = CV.subtract(img1,img2)
-plt.imshow(imgaddV2)
-plt.show()
