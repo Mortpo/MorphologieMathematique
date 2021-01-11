@@ -8,15 +8,14 @@ import Seuillage as BW
 
 
 def erode(binaryPicture, kernel, centerX, centerY):
-
-    pictureX, pictureY, profondeur = binaryPicture.shape
+    pictureX, pictureY = binaryPicture.shape
     matrixX, matrixY = kernel.shape
 
     if centerX > matrixX or centerY > matrixY:
         raise Exception(
             'Error in equation centerX > matrixX or centerY > matrixY')
 
-    result = np.uint8(np.zeros(((pictureX, pictureY, 1))))
+    result = np.uint8(np.zeros((pictureX, pictureY)))
     for i in range(pictureX):
         for j in range(pictureY):
             valide = True
@@ -34,22 +33,22 @@ def erode(binaryPicture, kernel, centerX, centerY):
                     if not valide:
                         break
             if valide:
-                result[i][j][0] = 1
+                result[i][j] = 1
             else:
-                result[i][j][0] = 0
+                result[i][j] = 0
     return result
 
 
 def dilate(binaryPicture, kernel, centerX, centerY):
 
-    pictureX, pictureY, profondeur = binaryPicture.shape
+    pictureX, pictureY = binaryPicture.shape
     matrixX, matrixY = kernel.shape
 
     if centerX > matrixX or centerY > matrixY:
         raise Exception(
             'Error in equation centerX > matrixX or centerY > matrixY')
 
-    result = np.uint8(np.zeros(((pictureX, pictureY, 1))))
+    result = np.uint8(np.zeros((pictureX, pictureY)))
     for i in range(pictureX):
         for j in range(pictureY):
 
@@ -69,4 +68,9 @@ def open(binaryPicture, kernel, centerX, centerY):
 
 def close(binaryPicture, kernel, centerX, centerY):
     result = erode(dilate(binaryPicture, kernel, centerX, centerY), kernel, centerX, centerY)
+    return result
+
+def thinning(binaryPicture, kernel, centerX, centerY):
+    result = 0
+    
     return result
