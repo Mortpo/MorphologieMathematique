@@ -83,3 +83,12 @@ def subTwoImages(picture1, picture2):
         else:
             raise Exception(
                 'Bad Picture Dimension')
+
+def inverseBinaryColor(binaryPicture):
+    picture1X, picture1Y = binaryPicture.shape
+    for i in range(picture1X):
+        for j in range(picture1Y):
+            binaryPicture[i][j] = 0 if binaryPicture[i][j] else 1
+    return binaryPicture
+                
+    

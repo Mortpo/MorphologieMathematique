@@ -11,36 +11,40 @@ import MorphologicalOperations as MOp
 img = np.zeros((100,400),dtype='uint8')
 font = CV.FONT_HERSHEY_SIMPLEX
 CV.putText(img,'TheAILearner',(5,70), font, 2,(255),5,CV.LINE_AA)
-img1 = img.copy()
 
 '''srcPicture = Outils.loadimage("image.jpg")
 srcPicture = BW.grayscale(srcPicture)
 srcPicture = BW.binarisation(srcPicture,125)'''
 
-kernel = np.array([[0,0,0],[1,1,1],[0,0,0]])
+kernel = np.array([[1,1,1],[1,1,1],[1,1,1]])
 
 
-thin = np.zeros(img1.shape,dtype='uint8')
-img1 = BW.binarisation(img1,120)
-img2= img.copy()
+thin = np.zeros(img.shape,dtype='uint8')
+BWPicture = BW.binarisation(img,120)
+BWCopie= BWPicture.copy()
+
 
 #result = MOp.thinning(img1,8,kernel,1,1)
 
-for i in range(9):
-    erode = MOp.erode(img1,kernel,1,1)
-    openned = MOp.open(erode,kernel,1,1)
+for i in range(8):
+    erode = MOp.dilate(BWPicture,kernel,1,1)
+    openned = MOp.close(erode,kernel,1,1)
     subset = AOp.subTwoImages( erode,openned)
-    img = AOp.addTwoImages(subset,img,1)
-    img1 = erode.copy()
+    BWCopie = AOp.addTwoImages(subset,BWCopie,1)
+    BWPicture = erode.copy()
 
 
 
 
-CV.imshow('original',img2)
+CV.imshow('original',img)
 
 
-CV.imshow('img',img*255) 
+CV.imshow('img',BWCopie*255) 
 
+
+result = MOp.thinning(AOp.inverseBinaryColor(BWCopie) ,8,kernel,1,1)
+
+CV.imshow('result',AOp.addTwoImages(result,img,1)*255) 
 
 CV.waitKey(0)
 
