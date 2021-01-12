@@ -1,6 +1,7 @@
 import cv2 as CV
 import numpy as np
 import matplotlib.pyplot as plt
+import ArithmeticOperations as AOp
 import Outils
 import Seuillage as BW
 
@@ -70,7 +71,16 @@ def close(binaryPicture, kernel, centerX, centerY):
     result = erode(dilate(binaryPicture, kernel, centerX, centerY), kernel, centerX, centerY)
     return result
 
-def thinning(binaryPicture, kernel, centerX, centerY):
-    result = 0
-    
-    return result
+def thinning(binaryPicture, iteration, kernel, centerX, centerY):
+    i=0
+    img1 = binaryPicture.copy()
+    thin = np.zeros(img1.shape,dtype='uint8')
+    while (CV.countNonZero(img1)!=0 and i < iteration):
+        i += 1
+        eroded = erode(img1,kernel,1,1)
+        openned = open(eroded,kernel,1,1)
+        subset = AOp.subTwoImages( eroded,openned)
+        thin = AOp.addTwoImages(subset,thin,1)
+        img1 = eroded.copy()
+
+    return thin

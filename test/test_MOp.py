@@ -7,7 +7,9 @@ import numpy as np
 srcPicture = Outils.loadimage("test.jpg")
 srcPicture = Seuillage.grayscale(srcPicture)
 srcPicture = Seuillage.binarisation(srcPicture,124)
-kernel = np.ones(((3,3)),dtype="uint8")
+#kernel = np.ones(((3,3)),dtype="uint8")
+
+kernel = np.array([[0,1,0],[1,1,1],[0,1,0]])
 
 def test_erode_3x3Kernel_True():
     expected = CV.erode(srcPicture,kernel)
