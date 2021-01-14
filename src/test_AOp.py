@@ -9,6 +9,7 @@ binaryPicture = Seuillage.grayscale(srcPicture)
 binaryPicture = Seuillage.binarisation(binaryPicture,124)
 
 def test_addColorImg_True():
+    global srcPicture
     expected = CV.add(srcPicture,srcPicture)
     result = AOp.addTwoImages(srcPicture,srcPicture,255)
     comparison = result == expected
@@ -16,6 +17,7 @@ def test_addColorImg_True():
     assert comparison.all()
 
 def test_addBinaryImg_True():
+    global binaryPicture
     expected = CV.add(binaryPicture,binaryPicture)
     result = AOp.addTwoImages(binaryPicture,binaryPicture,255)
     comparison = result == expected
@@ -23,6 +25,7 @@ def test_addBinaryImg_True():
     assert comparison.all()
 
 def test_subColorImg_True():
+    global srcPicture
     expected = srcPicture-srcPicture
     result = AOp.subTwoImages(srcPicture,srcPicture)
     comparison = result == expected
@@ -30,6 +33,7 @@ def test_subColorImg_True():
     assert comparison.all()
 
 def test_subBinaryImg_True():
+    global binaryPicture
     expected = binaryPicture-binaryPicture
     result = AOp.subTwoImages(binaryPicture,binaryPicture)
     comparison = result == expected

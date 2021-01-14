@@ -1,7 +1,6 @@
 import cv2 as CV
 import numpy as np
 import matplotlib.pyplot as plt
-import Outils
 
 
 #Prend en paramètre une image de couleur et renvoie un tableau représentant une image de gris
