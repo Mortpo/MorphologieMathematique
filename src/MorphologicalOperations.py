@@ -29,7 +29,7 @@ def erode(binaryPicture, kernel, centerX, centerY):
                         valide = False
                     else:
                         # verifie si le filtre est validé
-                        if binaryPicture[i+x-centerX][j+y-centerY] != kernel[x][y]:
+                        if binaryPicture[i+x-centerX][j+y-centerY] != kernel[x][y] and kernel[x][y]==1:
                             valide = False
                     if not valide:
                         break
