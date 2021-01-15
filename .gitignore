@@ -3,3 +3,5 @@ __pycache__/
 .pytest_cache/
 __pycache__/
 __init__.py
+setup.py
+MORPHOLOGIELATHEMATIQUE.egg-info

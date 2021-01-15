@@ -71,16 +71,127 @@ def close(binaryPicture, kernel, centerX, centerY):
     result = erode(dilate(binaryPicture, kernel, centerX, centerY), kernel, centerX, centerY)
     return result
 
-def thinning(binaryPicture, iteration, kernel, centerX, centerY):
-    i=0
-    img1 = binaryPicture.copy()
-    thin = np.zeros(img1.shape,dtype='uint8')
-    while (CV.countNonZero(img1)!=0 and i < iteration):
-        i += 1
-        eroded = erode(img1,kernel,1,1)
-        openned = open(eroded,kernel,1,1)
-        subset = AOp.subTwoImages( eroded,openned)
-        thin = AOp.addTwoImages(subset,thin,1)
-        img1 = eroded.copy()
+def thinning(binaryPicture):
 
-    return thin
+    kernel = np.array(
+    [[[1, 1, 1], [2, 1, 2], [0, 0, 0]], 
+    [[1, 1, 2], [1, 1, 0], [2, 0, 0]],
+    [[1, 2, 0], [1, 1,0], [1, 2, 0]], 
+    [[2, 0, 0], [1, 1, 0], [1,1, 2]], 
+    [[0, 0, 0], [ 2, 1, 2], [1, 1,1]],
+    [[0, 0, 2], [0, 1, 1], [2, 1, 1]], 
+    [[0, 2, 1], [0, 1, 1], [0, 2, 1]],
+    [[2, 1, 1], [0, 1, 1], [0, 0, 2]]]
+    )
+    kX,kY,kP = kernel.shape
+    bwX , bwY = binaryPicture.shape
+    tmp = binaryPicture.copy()
+    
+    for i in range(kX):
+        
+        for x in range(bwX):
+            for y in range(bwY):
+                valide = True
+                if binaryPicture[x][y] == 1:
+                    
+                    for j in range(kY):
+                        for k in range(kP):
+                            if kernel[i][j][k] != 2:
+                                if x+j-1 > 0 and y+k-1 > 0 and x+j-1 < bwX and y+k-1 < bwY:
+                                    if kernel[i][j][k] != binaryPicture[x+j-1][y+k-1] :
+                                        valide = False
+                                        break
+                                else:
+                                    
+                                    
+                                    if ((x+j-1) <= 0 or (y+k-1) <= 0 or (x+j-1) >= bwX or (y+k-1) >= bwY):
+                                        valeurPassePartout = kernel[i][j][k]
+                                    else:
+                                        valeurPassePartout = binaryPicture[x+j-1][y+k-1]
+                                    
+                                    if kernel[i][j][k] != valeurPassePartout :
+                                        valide = False
+                                        break
+
+                                    
+                                        
+                    if valide:
+                        tmp[x][y] = 0   
+        binaryPicture=tmp.copy()
+
+    return binaryPicture
+
+
+def thickening(binaryPicture):
+
+    kernel = np.array(
+    [[[1, 1, 1], [2, 0, 2], [0, 0, 0]], 
+    [[1, 1, 2], [1, 0, 0], [2, 0, 0]],
+    [[1, 2, 0], [1, 0,0], [1, 2, 0]], 
+    [[2, 0, 0], [1, 0, 0], [1,1, 2]], 
+    [[0, 0, 0], [ 2, 0, 2], [1, 1,1]],
+    [[0, 0, 2], [0, 0, 1], [2, 1, 1]], 
+    [[0, 2, 1], [0, 0, 1], [0, 2, 1]],
+    [[2, 1, 1], [0, 0, 1], [0, 0, 2]]]
+    )
+    kX,kY,kP = kernel.shape
+    bwX , bwY = binaryPicture.shape
+    tmp = binaryPicture.copy()
+    
+    for i in range(kX):
+        
+        for x in range(bwX):
+            for y in range(bwY):
+                valide = True
+                if binaryPicture[x][y] == 0:
+                    
+                    for j in range(kY):
+                        for k in range(kP):
+                            if kernel[i][j][k] != 2:
+                                if x+j-1 > 0 and y+k-1 > 0 and x+j-1 < bwX and y+k-1 < bwY:
+                                    if kernel[i][j][k] != binaryPicture[x+j-1][y+k-1] :
+                                        valide = False
+                                        break
+                                else:
+                                    
+                                    
+                                    if ((x+j-1) <= 0 or (y+k-1) <= 0 or (x+j-1) >= bwX or (y+k-1) >= bwY):
+                                        valeurPassePartout = kernel[i][j][k]
+                                    else:
+                                        valeurPassePartout = binaryPicture[x+j-1][y+k-1]
+                                    
+                                    if kernel[i][j][k] != valeurPassePartout :
+                                        valide = False
+                                        break
+
+                                    
+                                        
+                    if valide:
+                        tmp[x][y] = 1   
+        binaryPicture=tmp.copy()
+
+    return binaryPicture
+
+def lantuejoul(binaryPicture,indice,kernel,centerX,centerY):
+    
+    union = np.zeros((binaryPicture.shape))
+
+    for i in range(indice):
+        eroded = erode(binaryPicture,kernel,centerX,centerY)
+        opened = open(eroded,kernel,centerX,centerY)
+        subpic = AOp.subTwoImages(eroded,opened)
+        union = AOp.addTwoImages(union,subpic,1)
+        binaryPicture = eroded
+    return union
+
+def homotopique(binaryPicture):
+    i=0
+    kernel = np.array([[ 1, 1, 1],[1, 1, 1],[ 1, 1, 1]], dtype='uint8')
+    eroded = binaryPicture.copy()
+    while (CV.countNonZero(eroded)!=0) and i<20:
+        tmp = binaryPicture.copy()
+        i+=1
+        binaryPicture = thinning(binaryPicture)
+        eroded = erode(binaryPicture,kernel,1,1)
+        print(i)
+    return tmp 
