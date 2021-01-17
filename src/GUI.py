@@ -12,7 +12,7 @@ image = 0
 kernel = np.ones((3, 3), dtype='uint8')
 
 pas = Tk()
-pas.configure(bg='blue')
+pas.configure(bg='white')
 pas.title("Morphologie Mathematique")
 frame = ttk.Frame(pas)
 frame.grid()

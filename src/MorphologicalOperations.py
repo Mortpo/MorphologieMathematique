@@ -8,9 +8,10 @@ import Seuillage as BW
 # Fonction erosion, param : image binaire, param : matrice d'erosion , retour image
 
 
-def erode(binaryPicture, kernel, centerX, centerY):
+def erode(binaryPicture, kernel):
     pictureX, pictureY = binaryPicture.shape
     matrixX, matrixY = kernel.shape
+    centerX, centerY = 1, 1
 
     if centerX > matrixX or centerY > matrixY:
         raise Exception(
@@ -40,10 +41,11 @@ def erode(binaryPicture, kernel, centerX, centerY):
     return result
 
 
-def dilate(binaryPicture, kernel, centerX, centerY):
+def dilate(binaryPicture, kernel):
 
     pictureX, pictureY = binaryPicture.shape
     matrixX, matrixY = kernel.shape
+    centerX, centerY = 1, 1
 
     if centerX > matrixX or centerY > matrixY:
         raise Exception(
@@ -63,12 +65,12 @@ def dilate(binaryPicture, kernel, centerX, centerY):
 
     return result
 
-def open(binaryPicture, kernel, centerX, centerY):
-    result = dilate(erode(binaryPicture, kernel, centerX, centerY), kernel, centerX, centerY)
+def open(binaryPicture, kerne):
+    result = dilate(erode(binaryPicture, kernel), kernel)
     return result
 
-def close(binaryPicture, kernel, centerX, centerY):
-    result = erode(dilate(binaryPicture, kernel, centerX, centerY), kernel, centerX, centerY)
+def close(binaryPicture, kernel):
+    result = erode(dilate(binaryPicture, kernel), kernel)
     return result
 
 def thinning(binaryPicture):

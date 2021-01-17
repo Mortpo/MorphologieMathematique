@@ -44,7 +44,6 @@ def addTwoImages(picture1, picture2, maxvalue):
                 'Bad Picture Dimension')
 
 
-
 def subTwoImages(picture1, picture2):
 
     if len(picture1.shape) !=len(picture2.shape):
