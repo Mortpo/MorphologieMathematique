@@ -47,28 +47,20 @@ rb2.grid(column=2, row=2)
 rb2 = Radiobutton(frame, text="Ellipse Kernel", variable=RadioButtonValue, value=2, command=ShowChoice)
 rb2.grid(column=2, row=3)
 
-root = Tk()
-mainframe = ttk.Frame(root, padding="10 10 12 12")
-mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
-mainframe.columnconfigure(0, weight=1)
-mainframe.rowconfigure(0, weight=1)
-
-variable1 = StringVar()
+entryBValue = Entry(frame, width=7, text="122")
+entryBValue.grid(column=0, row=3)
+entryBValue.insert(0, "122")
 
 
 def binarise():
     global image
-    root.destroy()
-    image = BW.binarisation(image, int(variable1.get()))
+    value = int(entryBValue.get())
+    if value > 255:
+        value = 255
+    if value < 0:
+        value = 0
+    image = BW.binarisation(image, value)
     renderimage(image * 255)
-
-
-def search():
-    ttk.Entry(mainframe, width=7, textvariable=variable1).grid(column=2, row=1)
-    ttk.Label(mainframe, text="Value").grid(column=1, row=1)
-    ttk.Button(mainframe, text="Binarise", command=binarise).grid(column=2, row=13)
-
-    root.mainloop()
 
 
 def renderimage(picture):
@@ -94,28 +86,28 @@ def grayscale():
 def erosion():
     global image
     global kernel
-    image = MOp.erode(image, kernel, 1, 1)
+    image = MOp.erode(image, kernel)
     renderimage(image * 255)
 
 
 def dilatation():
     global image
     global kernel
-    image = MOp.dilate(image, kernel, 1, 1)
+    image = MOp.dilate(image, kernel)
     renderimage(image * 255)
 
 
 def ouverture():
     global image
     global kernel
-    image = MOp.open(image, kernel, 1, 1)
+    image = MOp.open(image, kernel)
     renderimage(image * 255)
 
 
 def fermeture():
     global image
     global kernel
-    image = MOp.close(image, kernel, 1, 1)
+    image = MOp.close(image, kernel)
     renderimage(image * 255)
 
 
@@ -132,11 +124,13 @@ def thick():
     image = MOp.thickening(image)
     renderimage(image * 255)
 
+
 def lantuejoul():
     global image
     global kernel
     image = MOp.lantuejoul(image, kernel, 8) #FAUT FAIRE ENCORE une entry pour l indice
     renderimage(image*255)
+
 
 def Homothopique():
     global image
@@ -151,7 +145,7 @@ button_Import.grid(column=0, row=0)
 button_GrayScale = ttk.Button(frame, text='BW Image', command=grayscale)
 button_GrayScale.grid(column=0, row=1)
 
-button_Binarise = ttk.Button(frame, text='Binarise Image', command=search)
+button_Binarise = ttk.Button(frame, text='Binarise Image', command=binarise)
 button_Binarise.grid(column=0, row=2)
 
 button_Erosion = ttk.Button(frame, text='Erode Image', command=erosion)
