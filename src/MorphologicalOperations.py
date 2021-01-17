@@ -65,7 +65,7 @@ def dilate(binaryPicture, kernel):
 
     return result
 
-def open(binaryPicture, kerne):
+def open(binaryPicture, kernel):
     result = dilate(erode(binaryPicture, kernel), kernel)
     return result
 
@@ -180,8 +180,8 @@ def lantuejoul(binaryPicture,indice,kernel):
     union = np.zeros((binaryPicture.shape))
 
     for i in range(indice):
-        eroded = erode(binaryPicture,kernel,centerX,centerY)
-        opened = open(eroded,kernel,centerX,centerY)
+        eroded = erode(binaryPicture,kernel)
+        opened = open(eroded,kernel)
         subpic = AOp.subTwoImages(eroded,opened)
         union = AOp.addTwoImages(union,subpic,1)
         binaryPicture = eroded
@@ -195,6 +195,6 @@ def homotopique(binaryPicture):
         tmp = binaryPicture.copy()
         i+=1
         binaryPicture = thinning(binaryPicture)
-        eroded = erode(binaryPicture,kernel,1,1)
+        eroded = erode(binaryPicture,kernel)
         print(i)
     return tmp 
