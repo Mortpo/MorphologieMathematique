@@ -174,17 +174,23 @@ def thickening(binaryPicture):
 
     return binaryPicture
 
-def lantuejoul(binaryPicture,indice,kernel):
+def lantuejoul(binaryPicture,kernel):
 
     centerX, centerY = 1, 1
     union = np.zeros((binaryPicture.shape))
+    i=0
+    subpic= np.ones((binaryPicture.shape))
 
-    for i in range(indice):
+    
+
+    while (CV.countNonZero(binaryPicture)!=0) :
+        i+=1
         eroded = erode(binaryPicture,kernel)
         opened = open(eroded,kernel)
         subpic = AOp.subTwoImages(eroded,opened)
         union = AOp.addTwoImages(union,subpic,1)
         binaryPicture = eroded
+        print("lantuejoul "+str(i))
     return union
 
 def homotopique(binaryPicture):
@@ -196,5 +202,5 @@ def homotopique(binaryPicture):
         i+=1
         binaryPicture = thinning(binaryPicture)
         eroded = erode(binaryPicture,kernel)
-        print(i)
+        print("homotopique "+str(i))
     return tmp 

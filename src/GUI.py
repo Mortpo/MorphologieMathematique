@@ -128,14 +128,14 @@ def thick():
 def lantuejoul():
     global image
     global kernel
-    image = MOp.lantuejoul(image, 8, kernel) #FAUT FAIRE ENCORE une entry pour l indice
+    image = MOp.lantuejoul(image, kernel) 
     renderimage(image*255)
 
 
 def Homothopique():
     global image
     global kernel
-    image = MOp.homotopique(image)  # FAUT FAIRE ENCORE une entry pour l indice
+    image = MOp.homotopique(image) 
     renderimage(image * 255)
 
 
