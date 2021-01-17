@@ -174,8 +174,9 @@ def thickening(binaryPicture):
 
     return binaryPicture
 
-def lantuejoul(binaryPicture,indice,kernel,centerX,centerY):
-    
+def lantuejoul(binaryPicture,indice,kernel):
+
+    centerX, centerY = 1, 1
     union = np.zeros((binaryPicture.shape))
 
     for i in range(indice):
